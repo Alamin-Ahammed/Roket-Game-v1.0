@@ -1,4 +1,5 @@
 
+
 class SpaceShooterGame {
   constructor() {
     this.playBtn = document.querySelector(".playbtn");
@@ -21,7 +22,7 @@ class SpaceShooterGame {
     this.playBtn.style.display = "none";
 
     this.playground.addEventListener("mousemove", (e) => this.moveRocket(e));
-    this.showEnemyInterval = setInterval(() => this.createEnemy(), 4000);
+    this.showEnemyInterval = setInterval(() => this.createEnemy(), 3000);
     this.destroyEnemyInterval = setInterval(() => this.destroyEnemy(), 90);
   }
 
