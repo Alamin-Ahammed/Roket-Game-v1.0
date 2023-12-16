@@ -1,0 +1,121 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+.main_container {
+    width: 100vw;
+    height: 100vh;
+    margin-inline: auto;
+    background: url(img/GameBg.jpg);
+    background-position: center;
+    position: relative;
+}
+
+.playground {
+    width: 100%;
+    height: 100%;
+}
+
+ .stopbtn , .playbtn{
+    background-color: rgb(7, 198, 7);
+    border-radius: 1rem;
+    cursor: pointer;
+    color: white;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 6rem;
+    height: 2.5rem;
+    padding: 5px;
+    font-size: 1.5rem;
+    position: absolute;
+    left: 5rem;
+    bottom: 3rem;
+    z-index: 100;
+}
+
+.stopbtn {
+    display: none;
+}
+
+.playbtn {
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.Rocket {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 0;
+}
+
+#rocket1 {
+    width: 160px;
+}
+
+.bullet{
+    position: absolute;
+    width: 5px;
+    height: 15px;
+    border-radius: 2px;
+    z-index: 1;
+    background-color: red;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 23px;
+    z-index: -1;
+    /* animation: animateBullet 0.3s linear infinite; */
+}
+
+
+.enemeys {
+    border: 1px solid #ec0000;
+    width: 100%;
+    height: 100%;
+}
+
+.enemy {
+    width: 50px;
+    height: 50px;
+    background: #ff1493;
+    border-radius: 50%;
+    position: absolute;
+    top: 0px;
+    left: 50%;
+    z-index: 2;
+    box-shadow: 0 0 10px 5px #48abe0,
+              0 0 20px 7px #ebecca,
+              0 0 25px 20px #8a2be2,
+              0 0 30px 25px #ff1493;
+    animation: enemyMove 5s linear infinite;
+}
+
+.animate {
+    /* position: absolute; */
+    animation: animateBullet 0.5s linear infinite;
+}
+
+@keyframes enemyMove {
+    0%{
+        position: absolute;
+        top: 0%;
+    }
+    100%{
+        position: absolute;
+        top: 100%;
+    }
+}
+
+@keyframes animateBullet {
+    0%{
+        position: absolute;
+        top: 0;
+    }
+    100%{
+        position: absolute;
+        top: -300%;
+    }
+}
