@@ -104,7 +104,7 @@ class SpaceShooterGame {
   }
 }
 
-// Initialize the game
+
 const spaceShooterGame = new SpaceShooterGame();
 
 
