@@ -14,8 +14,9 @@
 }
 
 .playground {
-    width: 100%;
-    height: 100%;
+    width: 90%;
+    height: 90%;
+    float: right;
 }
 
  .stopbtn , .playbtn{
@@ -71,9 +72,8 @@
 }
 
 
-.enemeys {
-    border: 1px solid #ec0000;
-    width: 100%;
+.enemies {
+    width: 90%;
     height: 100%;
 }
 
@@ -96,6 +96,11 @@
 .animate {
     /* position: absolute; */
     animation: animateBullet 0.5s linear infinite;
+}
+
+.pointsParent {
+    padding: 1rem 0;
+    color: white;
 }
 
 @keyframes enemyMove {

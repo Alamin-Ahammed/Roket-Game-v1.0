@@ -1,5 +1,3 @@
-
-
 class SpaceShooterGame {
   constructor() {
     this.playBtn = document.querySelector(".playbtn");
@@ -8,6 +6,7 @@ class SpaceShooterGame {
     this.rocket = document.querySelector(".Rocket");
     this.bulletsContainer = document.querySelector(".bullets");
     this.enemiesContainer = document.querySelector(".enemies");
+    this.points = document.querySelector(".points");
     this.showEnemyInterval = null;
     this.destroyEnemyInterval = null;
 
@@ -47,6 +46,7 @@ class SpaceShooterGame {
   }
 
   fireBullet(e) {
+    console.log(e)
     if (e.button === 1) {
       this.fireingInterval = setInterval(() => this.createBullet(), 400);
     }
@@ -87,6 +87,7 @@ class SpaceShooterGame {
         let enemyRect = enemy.getBoundingClientRect();
 
         if (this.isCollision(bulletRect, enemyRect)) {
+          this.points.innerHTML = parseInt(this.points.innerHTML) + 1;
           enemy.remove();
           bullet.remove();
         }
@@ -95,6 +96,7 @@ class SpaceShooterGame {
   }
 
   isCollision(rect1, rect2) {
+    // rect1 is the bulletRect  &&  rect2 is the enemyRect
     return rect1.x < rect2.x + rect2.width &&
       rect1.x + rect1.width > rect2.x &&
       rect1.y < rect2.y + rect2.height &&
