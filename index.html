@@ -1,32 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rocket Launcher Game</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="index.js" defer></script>
-</head>
-<body>
-  <div class="main_container">
-    <div class="pointsParent">
-      <span>Total Points:</span>
-      <span class="points">0</span>
-    </div>
-    <div class="menu">
-      <button class="stopbtn">Stop</button>
-      <button class="playbtn">Play</button>
-    </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rocket Launcher Game</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="index.js" defer></script>
+  </head>
+  <body>
+    <div class="main_container">
+      <div class="pointsParent">
+        <p>press "S" to mute or unmute the game</p>
+        <span>Total Points:</span>
+        <span class="points">0</span>
+      </div>
+      <div class="menu">
+        <div class="titleContainer">
+          <h1 class="title">Rocket Launcher Game</h1>
+          <h6 class="title">Developed By Alamin Ahammed</h6>
+          <div class="gameInstraction">
+            <p>Press Mouse Middle/Scroll Button To Fire.</p>
+            <p>Move mouse to move rocket.</p>
+          </div>
+        </div>
+        <button class="stopbtn">Stop</button>
+        <button class="playbtn">Play</button>
+      </div>
 
-    <div class="playground">
-      <div class="enemies"></div>
-      <div class="Rocket">
-        <img id="rocket1" src="img/rocket1.svg">
-        <div class="bullets">
-          <div class="bullet"></div>
+      <div class="playground">
+        <div class="enemies"></div>
+        <div class="Rocket">
+          <img id="rocket1" src="img/rocket1.svg" />
+          <div class="bullets">
+            <div class="bullet"></div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</body>
+  </body>
 </html>

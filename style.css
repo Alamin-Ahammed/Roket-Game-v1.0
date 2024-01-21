@@ -101,6 +101,24 @@
 .pointsParent {
     padding: 1rem 0;
     color: white;
+    position: absolute;
+}
+
+.title, .gameInstraction{
+    text-align: center;
+    color: white;
+}
+
+.gameInstraction {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.pointsParent > p {
+    font-size: 1rem;
+    padding: 1rem 0;
 }
 
 @keyframes enemyMove {
