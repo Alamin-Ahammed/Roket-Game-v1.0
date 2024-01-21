@@ -55,10 +55,12 @@ class SpaceShooterGame {
 
   fireBullet(e) {
     if (!this.isMuted) {
-      this.clearShootingSoundInterval = setInterval(
-        () => shootingSound.play(),
-        30
-      );
+      if (e.button === 1) {
+        this.clearShootingSoundInterval = setInterval(
+          () => shootingSound.play(),
+          30
+        );
+      }
     }
 
     onkeydown = (e) => {
