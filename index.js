@@ -65,7 +65,6 @@ class SpaceShooterGame {
 
     onkeydown = (e) => {
       if (e.key === "s") {
-        console.log("S is pressed");
         this.isMuted = true;
         clearInterval(this.clearShootingSoundInterval);
       }
