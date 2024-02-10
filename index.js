@@ -2,7 +2,7 @@ const audio = new Audio("https://www.fesliyanstudios.com/play-mp3/387");
 const shootingSound = new Audio("./audios/laser-gun.mp3");
 const playerDeath = new Audio("./audios/player-death-explosion.mp3");
 const megaSound = new Audio("./audios/spaceship-cannon-load-shoot.mp3");
-const gameoverSound = new Audio('./audios/gameoverVoice.m4a');
+const gameoverSound = new Audio("./audios/gameoverVoice.m4a");
 class SpaceShooterGame {
   constructor() {
     this.playBtn = document.querySelector(".playbtn");
@@ -14,15 +14,17 @@ class SpaceShooterGame {
     this.points = document.querySelector(".points");
     this.titleContainer = document.querySelector(".titleContainer");
     this.gameover = document.querySelector(".gameover");
-    this.playAgainBtn = document.querySelector(".playagainbtn")
+    this.playAgainBtn = document.querySelector(".playagainbtn");
     this.showEnemyInterval = null;
     this.destroyEnemyInterval = null;
     this.isMuted = false;
     this.count = 0;
 
     this.playBtn.addEventListener("click", () => this.startGame());
-    this.stopBtn.addEventListener("click", () => this.stopGame(this.playBtn,"inline-block"));
-    this.playAgainBtn.addEventListener('click', () => this.resetGame());
+    this.stopBtn.addEventListener("click", () =>
+      this.stopGame(this.playBtn, "inline-block")
+    );
+    this.playAgainBtn.addEventListener("click", () => this.resetGame());
     document.addEventListener("keydown", (e) => {
       if (e.key === "f" && this.stopBtn.style.display != "none") {
         if (this.count % 3 === 0) {
@@ -45,17 +47,17 @@ class SpaceShooterGame {
   }
 
   startGame() {
+    audio.play();
     this.stopBtn.style.display = "inline-block";
     this.playBtn.style.display = "none";
     this.titleContainer.style.display = "none";
-    audio.play();
     this.playground.addEventListener("mousemove", (e) => this.moveRocket(e));
     this.showEnemyInterval = setInterval(() => this.createEnemy(), 3000);
     this.destroyEnemyInterval = setInterval(() => this.destroyEnemy(), 90);
     this.isCollision();
   }
 
-  stopGame(element,property) {
+  stopGame(element, property) {
     this.enemiesContainer.innerHTML = "";
     this.stopBtn.style.display = "none";
     element.style.display = property;
@@ -78,13 +80,12 @@ class SpaceShooterGame {
     this.resetRocketPosition();
     this.stopFire();
     // Reset gameover text
-    this.gameover.classList.remove('showGameover');
-    this.playAgainBtn.style.display = 'none';
-    this.rocket.style.display = 'block';
+    this.gameover.classList.remove("showGameover");
+    this.playAgainBtn.style.display = "none";
+    this.rocket.style.display = "block";
     // Start the game again
     this.startGame();
   }
-
 
   moveRocket(e) {
     this.rocket.style.left = `${e.clientX}px`;
@@ -105,7 +106,7 @@ class SpaceShooterGame {
 
     onkeydown = (e) => {
       if (e.key === "s") {
-        this.isMuted = true;
+        this.isMuted = !this.isMuted;
       }
     };
     if (e.key === "f") {
@@ -166,13 +167,22 @@ class SpaceShooterGame {
       let enemyRect = enemy.getBoundingClientRect();
       const rocketRect = this.rocket.getBoundingClientRect();
       if (this.isCollision(rocketRect, enemyRect)) {
-        playerDeath.play();
-        this.blastEffect(this.rocket, rocketRect.left,rocketRect.top,"./img/Blast.gif")
+        if (!this.isMuted) {
+          playerDeath.play();
+        }
+        this.blastEffect(
+          this.rocket,
+          rocketRect.left,
+          rocketRect.top,
+          "./img/Blast.gif"
+        );
         setTimeout(() => {
-          gameoverSound.play();
+          if (!this.isMuted) {
+            gameoverSound.play();
+          }
         }, 700);
         this.gameover.classList.add("showGameover");
-        this.stopGame(this.playAgainBtn,'inline-flex');
+        this.stopGame(this.playAgainBtn, "inline-flex");
       }
     });
     bullets.forEach((bullet) => {
@@ -184,7 +194,9 @@ class SpaceShooterGame {
           this.points.innerHTML = parseInt(this.points.innerHTML) + 1;
           enemy.remove();
           bullet.remove();
-          playerDeath.play();
+          if (!this.isMuted) {
+            playerDeath.play();
+          }
           this.blastEffect(
             enemy,
             enemyRect.left,
