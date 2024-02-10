@@ -96,7 +96,7 @@
 
 .animate {
     /* position: absolute; */
-    animation: animateBullet 0.5s linear infinite;
+    animation: animateBullet 0.4s linear infinite;
 }
 
 .pointsParent {
@@ -121,6 +121,24 @@
 .pointsParent > p {
     font-size: 1rem;
     padding: 1rem 0;
+}
+
+.gameover {
+    position: absolute;
+    color: red;
+    text-align: center;
+    top: 190px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: none;
+}
+
+.gameover > h4 {
+    color: rgb(255, 255, 255);
+}
+
+.showGameover {
+    display: block;
 }
 
 @keyframes enemyMove {

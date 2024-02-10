@@ -12,6 +12,7 @@ class SpaceShooterGame {
     this.enemiesContainer = document.querySelector(".enemies");
     this.points = document.querySelector(".points");
     this.titleContainer = document.querySelector(".titleContainer");
+    this.gameover = document.querySelector(".gameover");
     this.showEnemyInterval = null;
     this.destroyEnemyInterval = null;
     this.isMuted = false;
@@ -47,10 +48,10 @@ class SpaceShooterGame {
     this.playBtn.style.display = "none";
     this.titleContainer.style.display = "none";
     audio.play();
-
     this.playground.addEventListener("mousemove", (e) => this.moveRocket(e));
     this.showEnemyInterval = setInterval(() => this.createEnemy(), 3000);
     this.destroyEnemyInterval = setInterval(() => this.destroyEnemy(), 90);
+    this.isCollision()
   }
 
   stopGame() {
@@ -88,6 +89,22 @@ class SpaceShooterGame {
     if (e.key === "f") {
       this.createBullet()
     }
+  }
+
+  blastEffect(elementToHide,hidingelemRectX,hidingelemRectY,pathOfGifEffectToShow) {
+    console.log(hidingelemRectX,hidingelemRectY)
+    elementToHide.style.display = 'none';
+    const gif = document.createElement('img');
+    gif.src = pathOfGifEffectToShow;
+    gif.style.position = 'absolute';
+    gif.style.top = (hidingelemRectX - (gif.width/2.5))+'px';
+    gif.style.left = (hidingelemRectY - (gif.height/2.5))+'px';
+    gif.style.borderRadius = '50%'
+    document.body.appendChild(gif);
+    console.log(gif);
+    setTimeout(() => {
+      gif.remove();
+    }, 500);
   }
 
   stopFire() {
@@ -129,9 +146,20 @@ class SpaceShooterGame {
           this.points.innerHTML = parseInt(this.points.innerHTML) + 1;
           enemy.remove();
           bullet.remove();
+          playerDeath.play();
+          this.blastEffect(enemy,enemyRect.top,enemyRect.left,'./img/Blast.gif')
         }
       });
     });
+    enemies.forEach(enemy => {
+      let enemyRect = enemy.getBoundingClientRect();
+      const rocketRect = this.rocket.getBoundingClientRect();
+      if (this.isCollision(rocketRect,enemyRect)) {
+        playerDeath.play();
+        this.gameover.classList.add('showGameover');
+        this.stopGame()
+      }
+    })
   }
 
   isCollision(rect1, rect2) {
