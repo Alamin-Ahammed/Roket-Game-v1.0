@@ -15,11 +15,31 @@ class SpaceShooterGame {
     this.showEnemyInterval = null;
     this.destroyEnemyInterval = null;
     this.isMuted = false;
+    this.count = 0;
 
     this.playBtn.addEventListener("click", () => this.startGame());
     this.stopBtn.addEventListener("click", () => this.stopGame());
-    this.rocket.addEventListener("mousedown", (e) => this.fireBullet(e));
-    this.rocket.addEventListener("mouseup", () => this.stopFire());
+    // this.rocket.addEventListener("mousedown", (e) => this.fireBullet(e));
+    // this.rocket.addEventListener("mouseup", () => this.stopFire());
+    document.addEventListener("keydown", (e) => {
+      if (e.key === 'f') {
+        if (this.count % 3 === 0) {
+          this.fireBullet(e)
+        }
+        if (this.count === 15) {
+          this.count = 0
+        }
+        this.count++
+      }
+    });
+    document.addEventListener("keyup", (e) => {
+      if (e.key === "f") {
+        setTimeout(() => {
+          this.stopFire();
+        }, 300);
+        this.count = 0;
+      }
+    });
   }
 
   startGame() {
@@ -55,29 +75,23 @@ class SpaceShooterGame {
 
   fireBullet(e) {
     if (!this.isMuted) {
-      if (e.button === 1) {
-        this.clearShootingSoundInterval = setInterval(
-          () => shootingSound.play(),
-          30
-        );
+      if (e.key === "f") {
+        shootingSound.play()
       }
     }
 
     onkeydown = (e) => {
       if (e.key === "s") {
         this.isMuted = true;
-        clearInterval(this.clearShootingSoundInterval);
       }
     };
-    if (e.button === 1) {
-      this.fireingInterval = setInterval(() => this.createBullet(), 400);
+    if (e.key === "f") {
+      this.createBullet()
     }
   }
 
   stopFire() {
     this.bulletsContainer.innerHTML = "";
-    clearInterval(this.fireingInterval);
-    clearInterval(this.clearShootingSoundInterval);
   }
 
   createBullet() {
