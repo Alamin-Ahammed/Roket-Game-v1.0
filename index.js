@@ -2,6 +2,7 @@ const audio = new Audio("https://www.fesliyanstudios.com/play-mp3/387");
 const shootingSound = new Audio("./audios/laser-gun.mp3");
 const playerDeath = new Audio("./audios/player-death-explosion.mp3");
 const megaSound = new Audio("./audios/spaceship-cannon-load-shoot.mp3");
+const gameoverSound = new Audio('./audios/gameoverVoice.m4a');
 class SpaceShooterGame {
   constructor() {
     this.playBtn = document.querySelector(".playbtn");
@@ -166,9 +167,12 @@ class SpaceShooterGame {
       const rocketRect = this.rocket.getBoundingClientRect();
       if (this.isCollision(rocketRect, enemyRect)) {
         playerDeath.play();
+        this.blastEffect(this.rocket, rocketRect.left,rocketRect.top,"./img/Blast.gif")
+        setTimeout(() => {
+          gameoverSound.play();
+        }, 700);
         this.gameover.classList.add("showGameover");
         this.stopGame(this.playAgainBtn,'inline-flex');
-        this.blastEffect(this.rocket, rocketRect.left,rocketRect.top,"./img/Blast.gif")
       }
     });
     bullets.forEach((bullet) => {
