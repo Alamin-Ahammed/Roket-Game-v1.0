@@ -51,6 +51,7 @@ class SpaceShooterGame {
     this.stopBtn.style.display = "inline-block";
     this.playBtn.style.display = "none";
     this.titleContainer.style.display = "none";
+    this.playground.style.cursor = "none";
     this.playground.addEventListener("mousemove", (e) => this.moveRocket(e));
     this.showEnemyInterval = setInterval(() => this.createEnemy(), 3000);
     this.destroyEnemyInterval = setInterval(() => this.destroyEnemy(), 90);
@@ -181,7 +182,9 @@ class SpaceShooterGame {
             gameoverSound.play();
           }
         }, 700);
+
         this.gameover.classList.add("showGameover");
+        this.playground.style.cursor = "pointer";
         this.stopGame(this.playAgainBtn, "inline-flex");
       }
     });

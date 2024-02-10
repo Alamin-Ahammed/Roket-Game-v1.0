@@ -59,6 +59,7 @@
     transform: translateX(-50%);
     bottom: 0;
     pointer-events: none;
+    cursor: alias;
 }
 
 #rocket1 {
