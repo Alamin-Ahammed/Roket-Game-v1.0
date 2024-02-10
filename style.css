@@ -19,7 +19,7 @@
     float: right;
 }
 
- .stopbtn , .playbtn{
+ .stopbtn , .playbtn, .playagainbtn{
     background-color: rgb(7, 198, 7);
     border-radius: 1rem;
     cursor: pointer;
@@ -27,7 +27,7 @@
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    width: 6rem;
+    min-width: 6rem;
     height: 2.5rem;
     padding: 5px;
     font-size: 1.5rem;
@@ -35,6 +35,13 @@
     left: 5rem;
     bottom: 3rem;
     z-index: 100;
+}
+
+.playagainbtn {
+    display: none;
+    position: absolute;
+    left: 38rem;
+    bottom: 3rem;
 }
 
 .stopbtn {

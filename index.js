@@ -13,24 +13,24 @@ class SpaceShooterGame {
     this.points = document.querySelector(".points");
     this.titleContainer = document.querySelector(".titleContainer");
     this.gameover = document.querySelector(".gameover");
+    this.playAgainBtn = document.querySelector(".playagainbtn")
     this.showEnemyInterval = null;
     this.destroyEnemyInterval = null;
     this.isMuted = false;
     this.count = 0;
 
     this.playBtn.addEventListener("click", () => this.startGame());
-    this.stopBtn.addEventListener("click", () => this.stopGame());
-    // this.rocket.addEventListener("mousedown", (e) => this.fireBullet(e));
-    // this.rocket.addEventListener("mouseup", () => this.stopFire());
+    this.stopBtn.addEventListener("click", () => this.stopGame(this.playBtn,"inline-block"));
+    this.playAgainBtn.addEventListener('click', () => this.resetGame());
     document.addEventListener("keydown", (e) => {
-      if (e.key === 'f') {
+      if (e.key === "f" && this.stopBtn.style.display != "none") {
         if (this.count % 3 === 0) {
-          this.fireBullet(e)
+          this.fireBullet(e);
         }
         if (this.count === 15) {
-          this.count = 0
+          this.count = 0;
         }
-        this.count++
+        this.count++;
       }
     });
     document.addEventListener("keyup", (e) => {
@@ -51,18 +51,39 @@ class SpaceShooterGame {
     this.playground.addEventListener("mousemove", (e) => this.moveRocket(e));
     this.showEnemyInterval = setInterval(() => this.createEnemy(), 3000);
     this.destroyEnemyInterval = setInterval(() => this.destroyEnemy(), 90);
-    this.isCollision()
+    this.isCollision();
   }
 
-  stopGame() {
+  stopGame(element,property) {
     this.enemiesContainer.innerHTML = "";
     this.stopBtn.style.display = "none";
-    this.playBtn.style.display = "inline-block";
+    element.style.display = property;
     this.playground.removeEventListener("mousemove", (e) => this.moveRocket(e));
     this.resetRocketPosition();
+    this.stopFire();
     clearInterval(this.showEnemyInterval);
     clearInterval(this.destroyEnemyInterval);
   }
+
+  resetGame() {
+    // Clear intervals
+    clearInterval(this.showEnemyInterval);
+    clearInterval(this.destroyEnemyInterval);
+
+    // Reset elements
+    this.enemiesContainer.innerHTML = "";
+    this.bulletsContainer.innerHTML = "";
+    this.points.innerHTML = "0";
+    this.resetRocketPosition();
+    this.stopFire();
+    // Reset gameover text
+    this.gameover.classList.remove('showGameover');
+    this.playAgainBtn.style.display = 'none';
+    this.rocket.style.display = 'block';
+    // Start the game again
+    this.startGame();
+  }
+
 
   moveRocket(e) {
     this.rocket.style.left = `${e.clientX}px`;
@@ -77,7 +98,7 @@ class SpaceShooterGame {
   fireBullet(e) {
     if (!this.isMuted) {
       if (e.key === "f") {
-        shootingSound.play()
+        shootingSound.play();
       }
     }
 
@@ -87,19 +108,23 @@ class SpaceShooterGame {
       }
     };
     if (e.key === "f") {
-      this.createBullet()
+      this.createBullet();
     }
   }
 
-  blastEffect(elementToHide,hidingelemRectX,hidingelemRectY,pathOfGifEffectToShow) {
-    console.log(hidingelemRectX,hidingelemRectY)
-    elementToHide.style.display = 'none';
-    const gif = document.createElement('img');
+  blastEffect(
+    elementToHide,
+    hidingelemRectX,
+    hidingelemRectY,
+    pathOfGifEffectToShow
+  ) {
+    elementToHide.style.display = "none";
+    const gif = document.createElement("img");
     gif.src = pathOfGifEffectToShow;
-    gif.style.position = 'absolute';
-    gif.style.top = (hidingelemRectX - (gif.width/2.5))+'px';
-    gif.style.left = (hidingelemRectY - (gif.height/2.5))+'px';
-    gif.style.borderRadius = '50%'
+    gif.style.position = "absolute";
+    gif.style.top = hidingelemRectY - gif.width / 2.5 + "px";
+    gif.style.left = hidingelemRectX - gif.height / 2.5 + "px";
+    gif.style.borderRadius = "50%";
     document.body.appendChild(gif);
     console.log(gif);
     setTimeout(() => {
@@ -136,9 +161,18 @@ class SpaceShooterGame {
     let bullets = this.bulletsContainer.querySelectorAll(".bullet");
     let enemies = this.enemiesContainer.querySelectorAll(".enemy");
 
+    enemies.forEach((enemy) => {
+      let enemyRect = enemy.getBoundingClientRect();
+      const rocketRect = this.rocket.getBoundingClientRect();
+      if (this.isCollision(rocketRect, enemyRect)) {
+        playerDeath.play();
+        this.gameover.classList.add("showGameover");
+        this.stopGame(this.playAgainBtn,'inline-flex');
+        this.blastEffect(this.rocket, rocketRect.left,rocketRect.top,"./img/Blast.gif")
+      }
+    });
     bullets.forEach((bullet) => {
       let bulletRect = bullet.getBoundingClientRect();
-
       enemies.forEach((enemy) => {
         let enemyRect = enemy.getBoundingClientRect();
 
@@ -147,19 +181,15 @@ class SpaceShooterGame {
           enemy.remove();
           bullet.remove();
           playerDeath.play();
-          this.blastEffect(enemy,enemyRect.top,enemyRect.left,'./img/Blast.gif')
+          this.blastEffect(
+            enemy,
+            enemyRect.left,
+            enemyRect.top,
+            "./img/Blast.gif"
+          );
         }
       });
     });
-    enemies.forEach(enemy => {
-      let enemyRect = enemy.getBoundingClientRect();
-      const rocketRect = this.rocket.getBoundingClientRect();
-      if (this.isCollision(rocketRect,enemyRect)) {
-        playerDeath.play();
-        this.gameover.classList.add('showGameover');
-        this.stopGame()
-      }
-    })
   }
 
   isCollision(rect1, rect2) {
