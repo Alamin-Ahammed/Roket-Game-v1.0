@@ -31,9 +31,10 @@ class SpaceShooterGame {
       if (
         e.key === "f" &&
         this.stopBtn.style.display != "none" &&
-        this.isPlayBtnClicked && !this.ismouseFiringNotKeyboard
+        this.isPlayBtnClicked &&
+        !this.ismouseFiringNotKeyboard
       ) {
-        console.log('pressing "f"')
+        console.log('pressing "f"');
         if (this.count % 3 === 0) {
           this.fireBullet(e);
         }
@@ -45,12 +46,16 @@ class SpaceShooterGame {
     });
     // this is for mobile or that devices which doesn't have keyboard system. start
     document.addEventListener("mousedown", (e) => {
-      if (e.button === 0 && this.isPlayBtnClicked) {
+      if (
+        e.button === 0 &&
+        this.isPlayBtnClicked &&
+        this.stopBtn.style.display != "none"
+      ) {
         this.mouseFiring = setInterval(() => this.fireBullet(e), 300);
         this.ismouseFiringNotKeyboard = true;
       }
     });
-    // by clicking on screen 
+    // by clicking on screen
     // document.addEventListener("click", (e) => {
     //   if (e.button === 0 && this.isPlayBtnClicked) {
     //     this.mouseFiring = setInterval(() => this.fireBullet(e), 300);
