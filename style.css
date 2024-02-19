@@ -14,8 +14,8 @@
 }
 
 .playground {
-    width: 97%;
-    height: 90%;
+    width: 97vw;
+    height: 100vh;
     float: right;
 }
 
@@ -171,10 +171,3 @@
         top: -300%;
     }
 }
-
-
-/* @media screen and (max-width: '900px') {
-    .Rocket {
-        pointer-events: all;
-    }
-} */
