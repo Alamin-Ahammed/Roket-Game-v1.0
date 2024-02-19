@@ -40,8 +40,9 @@
 .playagainbtn {
     display: none;
     position: absolute;
-    left: 38rem;
+    left: 50%;
     bottom: 3rem;
+    transform: translateX(-50%);
 }
 
 .stopbtn {
@@ -170,3 +171,10 @@
         top: -300%;
     }
 }
+
+
+/* @media screen and (max-width: '900px') {
+    .Rocket {
+        pointer-events: all;
+    }
+} */

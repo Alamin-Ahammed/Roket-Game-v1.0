@@ -20,6 +20,8 @@ class SpaceShooterGame {
     this.isMuted = false;
     this.isPlayBtnClicked = false;
     this.ismouseFiringNotKeyboard = false;
+    this.isTouchFiring = false;
+    this.fireOnClick = false;
     this.count = 0;
 
     this.playBtn.addEventListener("click", () => this.startGame());
@@ -45,6 +47,33 @@ class SpaceShooterGame {
       }
     });
     // this is for mobile or that devices which doesn't have keyboard system. start
+    // by toucing on screen
+    document.addEventListener("touchstart", (e) => {
+      if (this.isPlayBtnClicked && this.stopBtn.style.display !== "none") {
+        e.preventDefault(); // Prevent scrolling on touch devices
+        this.touchFiring = setInterval(() => this.fireBullet(e), 300);
+        this.isTouchFiring = true;
+      }
+    });
+
+    document.addEventListener("touchend", () => {
+      setTimeout(() => {
+        this.stopFire();
+      }, 300);
+      clearInterval(this.touchFiring);
+      this.isTouchFiring = false;
+    });
+
+    // Adjust the moveRocket function for touch events
+    this.playground.addEventListener("touchmove", (e) => {
+      e.preventDefault(); // Prevent scrolling on touch devices
+      const touch = e.touches[0];
+      this.moveRocket({
+        clientX: touch.clientX,
+        clientY: touch.clientY - 80,
+      });
+    });
+    /*********************************************************************/
     document.addEventListener("mousedown", (e) => {
       if (
         e.button === 0 &&
@@ -55,14 +84,6 @@ class SpaceShooterGame {
         this.ismouseFiringNotKeyboard = true;
       }
     });
-    // by clicking on screen
-    // document.addEventListener("click", (e) => {
-    //   if (e.button === 0 && this.isPlayBtnClicked) {
-    //     this.mouseFiring = setInterval(() => this.fireBullet(e), 300);
-    //     this.ismouseFiringNotKeyboard = true;
-    //   }
-    // });
-    /*********************************************************************/
     document.addEventListener("mouseup", (e) => {
       if (e.button === 0) {
         setTimeout(() => {
@@ -133,12 +154,12 @@ class SpaceShooterGame {
 
   resetRocketPosition() {
     this.rocket.style.left = `${50}%`;
-    this.rocket.style.top = `${0}px`;
+    this.rocket.style.top = `${70}%`;
   }
 
   fireBullet(e) {
     if (!this.isMuted) {
-      if (e.key === "f" || e.button === 0) {
+      if (e.key === "f" || e.button === 0 || this.isTouchFiring) {
         shootingSound.play();
       }
     }
@@ -148,7 +169,7 @@ class SpaceShooterGame {
         this.isMuted = !this.isMuted;
       }
     };
-    if (e.key === "f" || e.button === 0) {
+    if (e.key === "f" || e.button === 0 || this.isTouchFiring) {
       this.createBullet();
     }
   }
