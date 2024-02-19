@@ -18,6 +18,8 @@ class SpaceShooterGame {
     this.showEnemyInterval = null;
     this.destroyEnemyInterval = null;
     this.isMuted = false;
+    this.isPlayBtnClicked = false;
+    this.ismouseFiringNotKeyboard = false;
     this.count = 0;
 
     this.playBtn.addEventListener("click", () => this.startGame());
@@ -26,7 +28,12 @@ class SpaceShooterGame {
     );
     this.playAgainBtn.addEventListener("click", () => this.resetGame());
     document.addEventListener("keydown", (e) => {
-      if (e.key === "f" && this.stopBtn.style.display != "none") {
+      if (
+        e.key === "f" &&
+        this.stopBtn.style.display != "none" &&
+        this.isPlayBtnClicked && !this.ismouseFiringNotKeyboard
+      ) {
+        console.log('pressing "f"')
         if (this.count % 3 === 0) {
           this.fireBullet(e);
         }
@@ -36,6 +43,31 @@ class SpaceShooterGame {
         this.count++;
       }
     });
+    // this is for mobile or that devices which doesn't have keyboard system. start
+    document.addEventListener("mousedown", (e) => {
+      if (e.button === 0 && this.isPlayBtnClicked) {
+        this.mouseFiring = setInterval(() => this.fireBullet(e), 300);
+        this.ismouseFiringNotKeyboard = true;
+      }
+    });
+    // by clicking on screen 
+    // document.addEventListener("click", (e) => {
+    //   if (e.button === 0 && this.isPlayBtnClicked) {
+    //     this.mouseFiring = setInterval(() => this.fireBullet(e), 300);
+    //     this.ismouseFiringNotKeyboard = true;
+    //   }
+    // });
+    /*********************************************************************/
+    document.addEventListener("mouseup", (e) => {
+      if (e.button === 0) {
+        setTimeout(() => {
+          this.stopFire();
+        }, 300);
+        clearInterval(this.mouseFiring);
+        this.ismouseFiringNotKeyboard = false;
+      }
+    });
+    // this is for mobile or that devices which doesn't have keyboard system. end
     document.addEventListener("keyup", (e) => {
       if (e.key === "f") {
         setTimeout(() => {
@@ -52,6 +84,7 @@ class SpaceShooterGame {
     this.playBtn.style.display = "none";
     this.titleContainer.style.display = "none";
     this.playground.style.cursor = "none";
+    this.isPlayBtnClicked = true;
     this.playground.addEventListener("mousemove", (e) => this.moveRocket(e));
     this.showEnemyInterval = setInterval(() => this.createEnemy(), 3000);
     this.destroyEnemyInterval = setInterval(() => this.destroyEnemy(), 90);
@@ -100,7 +133,7 @@ class SpaceShooterGame {
 
   fireBullet(e) {
     if (!this.isMuted) {
-      if (e.key === "f") {
+      if (e.key === "f" || e.button === 0) {
         shootingSound.play();
       }
     }
@@ -110,7 +143,7 @@ class SpaceShooterGame {
         this.isMuted = !this.isMuted;
       }
     };
-    if (e.key === "f") {
+    if (e.key === "f" || e.button === 0) {
       this.createBullet();
     }
   }
@@ -129,7 +162,6 @@ class SpaceShooterGame {
     gif.style.left = hidingelemRectX - gif.height / 2.5 + "px";
     gif.style.borderRadius = "50%";
     document.body.appendChild(gif);
-    console.log(gif);
     setTimeout(() => {
       gif.remove();
     }, 500);
